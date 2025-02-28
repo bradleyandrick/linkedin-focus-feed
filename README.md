@@ -21,7 +21,7 @@ A Chrome extension that enhances your LinkedIn feed by removing distracting prom
 1. Clone this repository or download it as a ZIP file
 2. Open Chrome and navigate to `chrome://extensions/`
 3. Enable "Developer mode" in the top right corner
-4. Click "Load unpacked" and select the extension folder from this repository
+4. Click "Load unpacked" and select the `linkedin-focus-feed` folder from inside the repository
 5. The extension will automatically start working when you visit LinkedIn
 
 ## How It Works
