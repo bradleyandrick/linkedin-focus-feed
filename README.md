@@ -38,6 +38,7 @@ Feel free to contribute to this project by submitting issues or pull requests.
 
 - Add configuration options to toggle which elements to hide
 - Add functionality to remove other non-relevant elements
+- Publish to Chrome Web Store (I'm not sure if I want to deal with that and LinkedIn terms of service garbage)
 
 ## License
 
