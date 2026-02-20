@@ -1,103 +1,85 @@
+const DEFAULT_SETTINGS = {
+  hideSuggested: true,
+  hideRecommended: true,
+  hideJobsRecommended: true,
+  hidePromoted: true,
+  hideJobsPosts: true,
+  hideSearchOpenJobs: true,
+  hideLearnMore: true,
+  hideExplore: true,
+};
+
+let settings = { ...DEFAULT_SETTINGS };
+
+function hideElement(el, filterKey) {
+  if (el.dataset.lffHidden) return;
+  el.style.display = "none";
+  el.dataset.lffHidden = filterKey;
+}
+
+function unhideFilter(filterKey) {
+  document.querySelectorAll(`[data-lff-hidden="${filterKey}"]`).forEach((el) => {
+    el.style.display = "";
+    delete el.dataset.lffHidden;
+  });
+}
+
+// Returns the closest feed post container, supporting both the old class-based
+// layout and the new role="listitem" layout LinkedIn now uses.
+function closestPostContainer(el) {
+  let node = el;
+  while (node) {
+    if (node.classList && node.classList.contains("feed-shared-update-v2")) return node;
+    if (node.getAttribute && node.getAttribute("role") === "listitem") return node;
+    if (node.tagName === "LI") return node;
+    node = node.parentElement;
+  }
+  return null;
+}
+
+// Searches both <span> and <p> elements for text content matching the predicate,
+// then hides the closest post container.
+function hideByText(selector, predicate, filterKey) {
+  document.querySelectorAll(selector).forEach((el) => {
+    // Only match leaf-like nodes to avoid matching large containers whose
+    // textContent includes many nested strings.
+    const text = el.textContent.trim().toLowerCase();
+    if (predicate(text)) {
+      const container = closestPostContainer(el);
+      if (container) hideElement(container, filterKey);
+    }
+  });
+}
+
 function hideSuggestedPosts() {
-  document
-    .querySelectorAll("span.update-components-header__text-view")
-    .forEach((span) => {
-      if (span.textContent.trim() === "Suggested") {
-        let postContainer = span.closest("div.feed-shared-update-v2");
-        if (postContainer) {
-          postContainer.style.display = "none";
-        }
-      }
-    });
+  hideByText("span, p", (t) => t === "suggested", "hideSuggested");
 }
 
-function hidePromotedPosts() {
-  document.querySelectorAll("span").forEach((span) => {
-    if (span.textContent.trim().toLowerCase().includes("promoted")) {
-      let postContainer = span;
-      while (
-        postContainer &&
-        !postContainer.classList.contains("feed-shared-update-v2")
-      ) {
-        postContainer = postContainer.parentElement;
-      }
-      if (postContainer) {
-        postContainer.style.display = "none";
-      }
-    }
-  });
-}
-
-function hideSearchOpenJobs() {
-  document.querySelectorAll("span").forEach((span) => {
-    if (span.textContent.trim().toLowerCase().includes("search open jobs")) {
-      let postContainer = span;
-      while (
-        postContainer &&
-        !postContainer.classList.contains("feed-shared-update-v2")
-      ) {
-        postContainer = postContainer.parentElement;
-      }
-      if (postContainer) {
-        postContainer.style.display = "none";
-      }
-    }
-  });
+function hideRecommendedForYou() {
+  hideByText("span, p", (t) => t === "recommended for you", "hideRecommended");
 }
 
 function hideJobsRecommendedForYou() {
-  document.querySelectorAll("span").forEach((span) => {
-    if (span.textContent.trim().toLowerCase().includes("jobs")) {
-      let postContainer = span;
-      while (
-        postContainer &&
-        !postContainer.classList.contains("feed-shared-update-v2")
-      ) {
-        postContainer = postContainer.parentElement;
-      }
-      if (postContainer) {
-        postContainer.style.display = "none";
-      }
-    }
-  });
+  hideByText("span, p", (t) => t === "jobs recommended for you", "hideJobsRecommended");
+}
+
+function hidePromotedPosts() {
+  hideByText("span, p", (t) => t === "promoted", "hidePromoted");
+}
+
+function hideSearchOpenJobs() {
+  hideByText("span, p", (t) => t === "search open jobs", "hideSearchOpenJobs");
 }
 
 function hidePostsContainingJobs() {
-  document.querySelectorAll("span").forEach((span) => {
-    if (span.textContent.trim().toLowerCase().includes("jobs")) {
-      let postContainer = span;
-      while (
-        postContainer &&
-        !postContainer.classList.contains("feed-shared-update-v2") &&
-        !postContainer.classList.contains(
-          "feed-shared-update-v2__control-menu-container"
-        )
-      ) {
-        postContainer = postContainer.parentElement;
-      }
-      if (postContainer) {
-        postContainer.style.display = "none";
-      }
-    }
-  });
+  hideByText("span, p", (t) => t.includes("jobs"), "hideJobsPosts");
 }
 
 function hideLearnMoreLinks() {
   document.querySelectorAll("a").forEach((anchor) => {
     if (anchor.textContent.trim().toLowerCase().includes("learn more")) {
-      let postContainer = anchor;
-      while (
-        postContainer &&
-        !postContainer.classList.contains("feed-shared-update-v2") &&
-        !postContainer.classList.contains(
-          "feed-shared-update-v2__control-menu-container"
-        )
-      ) {
-        postContainer = postContainer.parentElement;
-      }
-      if (postContainer) {
-        postContainer.style.display = "none";
-      }
+      const container = closestPostContainer(anchor);
+      if (container) hideElement(container, "hideLearnMore");
     }
   });
 }
@@ -105,37 +87,36 @@ function hideLearnMoreLinks() {
 function hideExploreLinks() {
   document.querySelectorAll("a").forEach((anchor) => {
     if (anchor.textContent.trim().toLowerCase().includes("explore")) {
-      let postContainer = anchor;
-      while (
-        postContainer &&
-        !postContainer.classList.contains("feed-shared-update-v2") &&
-        !postContainer.classList.contains(
-          "feed-shared-update-v2__control-menu-container"
-        )
-      ) {
-        postContainer = postContainer.parentElement;
-      }
-      if (postContainer) {
-        postContainer.style.display = "none";
-      }
+      const container = closestPostContainer(anchor);
+      if (container) hideElement(container, "hideExplore");
     }
   });
 }
 
-// Run all functions when the page loads
-hideSuggestedPosts();
-hidePromotedPosts();
-hidePostsContainingJobs();
-hideSearchOpenJobs();
-hideLearnMoreLinks();
-hideExploreLinks();
+function runFilters() {
+  if (settings.hideSuggested) hideSuggestedPosts();
+  if (settings.hideRecommended) hideRecommendedForYou();
+  if (settings.hideJobsRecommended) hideJobsRecommendedForYou();
+  if (settings.hidePromoted) hidePromotedPosts();
+  if (settings.hideJobsPosts) hidePostsContainingJobs();
+  if (settings.hideSearchOpenJobs) hideSearchOpenJobs();
+  if (settings.hideLearnMore) hideLearnMoreLinks();
+  if (settings.hideExplore) hideExploreLinks();
+}
 
-// Run periodically to handle dynamically loaded content
-setInterval(() => {
-  hideSuggestedPosts();
-  hidePromotedPosts();
-  hidePostsContainingJobs();
-  hideSearchOpenJobs();
-  hideLearnMoreLinks();
-  hideExploreLinks();
-}, 500);
+chrome.storage.sync.get(DEFAULT_SETTINGS, (stored) => {
+  settings = stored;
+  runFilters();
+});
+
+chrome.storage.onChanged.addListener((changes) => {
+  for (const [key, { newValue }] of Object.entries(changes)) {
+    const wasEnabled = settings[key];
+    settings[key] = newValue;
+    if (!newValue && wasEnabled) {
+      unhideFilter(key);
+    }
+  }
+});
+
+setInterval(runFilters, 500);

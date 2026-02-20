@@ -1,10 +1,14 @@
 {
   "manifest_version": 3,
   "name": "LinkedIn Focus Feed",
-  "version": "1.0",
+  "version": "1.2",
   "description": "Hides annoying LinkedIn posts and makes your feed mostly be posts from actual people you follow.",
-  "permissions": ["scripting"],
+  "permissions": ["scripting", "storage"],
   "host_permissions": ["https://www.linkedin.com/*"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "LinkedIn Focus Feed"
+  },
   "content_scripts": [
     {
       "matches": ["https://www.linkedin.com/*"],

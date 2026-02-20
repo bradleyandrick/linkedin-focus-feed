@@ -4,29 +4,32 @@ A Chrome extension that enhances your LinkedIn feed by removing distracting prom
 
 ## Features
 
-- Removes promoted posts
-- Eliminates "Suggested" content
+- **Configurable filters** — Popup UI lets you turn each filter on or off so you see the feed you want
+- Removes **Suggested** posts
+- Removes **Recommended for you** sections
+- Removes **Jobs recommended for you** sections
+- Removes **Promoted** posts
 - Hides marketing-related content:
   - Posts with "Learn More" links
   - Posts with "Explore" links
 - Removes job-related content:
   - "Search Open Jobs" posts
-  - Job recommendations
   - Posts containing job-related content
 - Creates a cleaner, more focused news feed
 - Automatically handles dynamically loaded content
+- Works with LinkedIn’s current layout (supports both legacy and new DOM structure)
 
 ## Installation
 
 1. Clone this repository or download it as a ZIP file
-2. Open Chrome and navigate to `chrome://extensions/`
-3. Enable "Developer mode" in the top right corner
-4. Click "Load unpacked" and select the `linkedin-focus-feed` folder from inside the repository
-5. The extension will automatically start working when you visit LinkedIn
+2. Open Chrome and go to `chrome://extensions/`
+3. Turn on **Developer mode** (top right)
+4. Click **Load unpacked** and choose the inner `linkedin-focus-feed` folder (the one that contains `manifest.json`, `content.js`, and `popup.html`)
+5. The extension runs on LinkedIn automatically; click its icon to open the popup and choose which filters to apply
 
 ## How It Works
 
-This extension dynamically modifies your LinkedIn feed by removing promotional content, job-related posts, and marketing suggestions as they appear. It runs both on page load and continuously checks for new content every 500ms, providing you with a cleaner and more relevant feed focused on your professional network's updates.
+The extension reads your filter choices from the popup (stored in Chrome sync) and hides matching feed items on LinkedIn. It runs on page load and re-scans the feed every 500ms so new content is filtered as it appears. You can toggle any filter on or off at any time; changes apply immediately on open LinkedIn tabs.
 
 ## Contributing
 
@@ -34,11 +37,10 @@ Feel free to contribute to this project by submitting issues or pull requests.
 
 ## Ideas for Improvement
 
-> This was created as a personal project and adheres to my own personal preferences. So some of the remaining elements may not be removed.
+> This was created as a personal project and adheres to my own personal preferences. Some remaining elements may not be removed.
 
-- Add configuration options to toggle which elements to hide
-- Add functionality to remove other non-relevant elements
-- Publish to Chrome Web Store (I'm not sure if I want to deal with that and LinkedIn terms of service garbage)
+- Add more filter types or remove other non-relevant elements
+- Publish to Chrome Web Store (LinkedIn terms of service and store policies are a consideration)
 
 ## License
 
