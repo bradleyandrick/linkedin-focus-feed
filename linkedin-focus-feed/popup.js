@@ -3,6 +3,7 @@ const FILTERS = [
   { key: "hideRecommended",    label: "Recommended for you" },
   { key: "hideJobsRecommended",label: "Jobs recommended for you" },
   { key: "hidePromoted",       label: "Promoted posts" },
+  { key: "hideFromYourActivity", label: "From your activity" },
   { key: "hideJobsPosts",      label: "Jobs-related posts" },
   { key: "hideSearchOpenJobs", label: "Search Open Jobs posts" },
   { key: "hideLearnMore",      label: '"Learn More" posts' },

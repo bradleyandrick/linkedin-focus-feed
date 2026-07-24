@@ -3,6 +3,7 @@ const DEFAULT_SETTINGS = {
   hideRecommended: true,
   hideJobsRecommended: true,
   hidePromoted: true,
+  hideFromYourActivity: true,
   hideJobsPosts: true,
   hideSearchOpenJobs: true,
   hideLearnMore: true,
@@ -67,6 +68,10 @@ function hidePromotedPosts() {
   hideByText("span, p", (t) => t === "promoted", "hidePromoted");
 }
 
+function hideFromYourActivityPosts() {
+  hideByText("span, p", (t) => t === "from your activity", "hideFromYourActivity");
+}
+
 function hideSearchOpenJobs() {
   hideByText("span, p", (t) => t === "search open jobs", "hideSearchOpenJobs");
 }
@@ -98,6 +103,7 @@ function runFilters() {
   if (settings.hideRecommended) hideRecommendedForYou();
   if (settings.hideJobsRecommended) hideJobsRecommendedForYou();
   if (settings.hidePromoted) hidePromotedPosts();
+  if (settings.hideFromYourActivity) hideFromYourActivityPosts();
   if (settings.hideJobsPosts) hidePostsContainingJobs();
   if (settings.hideSearchOpenJobs) hideSearchOpenJobs();
   if (settings.hideLearnMore) hideLearnMoreLinks();
